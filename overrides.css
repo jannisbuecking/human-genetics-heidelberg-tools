@@ -1,0 +1,2 @@
+.hero { display:block; min-height:500px; padding:120px 48px 95px; }
+@media (max-width:700px) { .hero { padding:78px 20px 70px; } }

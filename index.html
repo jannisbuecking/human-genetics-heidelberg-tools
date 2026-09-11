@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Web tools and databases from the Institute of Humangenetics Heidelberg." />
+  <title>Institute of Humangenetics Heidelberg | Digital Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="overrides.css" />
+</head>
+<body>
+  <a class="skip-link" href="#tools">Skip to tools</a>
+  <header class="site-header">
+    <a class="hospital-logo" href="https://www.klinikum.uni-heidelberg.de/humangenetik/" target="_blank" rel="noopener noreferrer" aria-label="Universitätsklinikum Heidelberg">
+      <img src="assets/ukhd-logo.png" alt="Universitätsklinikum Heidelberg" />
+    </a>
+    <nav aria-label="Main navigation"><a href="#tools">Tools</a><a href="#about">About</a><a class="nav-button" href="https://www.klinikum.uni-heidelberg.de/humangenetik/" target="_blank" rel="noopener noreferrer">Institute page ↗</a></nav>
+  </header>
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Institute of Humangenetics Heidelberg</p>
+        <h1 id="hero-title">Digital tools for <em>human genetics.</em></h1>
+        <p class="intro">A shared gateway to web applications and databases developed at the Institute of Humangenetics Heidelberg.</p>
+        <a class="button" href="#tools">Explore tools <span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+    <section class="tools-section" id="tools" aria-labelledby="tools-title">
+      <div class="section-heading"><p class="eyebrow">Web applications</p><h2 id="tools-title">Research tools. One home.</h2><p>These applications currently run on external infrastructure. Institute-hosted versions will follow.</p></div>
+      <div class="tool-grid">
+        <article class="tool-card mammoth">
+          <div class="card-top"><span class="tool-number">01</span><span class="status">Live</span></div>
+          <div class="tool-logo-wrap"><img class="mammoth-logo" src="assets/mammoth-logo.png" alt="MAMMOTH logo" /></div>
+          <p class="tool-description">Interactive application for genetic data analysis and variant annotation.</p>
+          <div class="card-links"><a class="text-link" href="https://jannisbuecking-mamoth.share.connect.posit.cloud/" target="_blank" rel="noopener noreferrer">Open web tool <span aria-hidden="true">↗</span></a><a class="repo-link" href="https://github.com/jannisbuecking/MAMMOTH" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+        </article>
+        <article class="tool-card mfap">
+          <div class="card-top"><span class="tool-number">02</span><span class="status">Live</span></div>
+          <div class="tool-logo-wrap"><img class="mfap-logo" src="assets/mfap-logo.svg" alt="MfAP logo" /></div>
+          <p class="tool-description">Calculate and predict DNA- and protein-level consequences of variants in single-exon genes.</p>
+          <div class="card-links"><a class="text-link" href="https://tim-schubert-mfap.share.connect.posit.cloud/" target="_blank" rel="noopener noreferrer">Open web tool <span aria-hidden="true">↗</span></a><a class="repo-link" href="https://github.com/tim-schubert/mfap" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+        </article>
+      </div>
+    </section>
+    <section class="about" id="about"><p class="eyebrow">About this portal</p><p class="about-text">A clear, discoverable home for the Institute’s digital research resources—built to grow with new tools, databases and services.</p></section>
+  </main>
+  <footer><span>© <span id="year"></span> Institute of Humangenetics Heidelberg</span><a href="https://www.klinikum.uni-heidelberg.de/humangenetik/" target="_blank" rel="noopener noreferrer">Universitätsklinikum Heidelberg ↗</a></footer>
+  <script src="script.js"></script>
+</body>
+</html>
