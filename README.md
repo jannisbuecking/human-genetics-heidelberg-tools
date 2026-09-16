@@ -1,6 +1,7 @@
 # Institute of Humangenetics Heidelberg — Digital Tools
 
 Static prototype for web tools and databases from the Institute of Humangenetics Heidelberg.
+https://jannisbuecking.github.io/human-genetics-heidelberg-tools/
 
 ## Preview locally
 
