@@ -83,15 +83,6 @@ if (chromosomeCanvas) {
       context.shadowBlur = 14;
       context.stroke();
 
-      // Explicitly cap both ends so the chromosome tips stay fully rounded
-      // across browsers and at every animation angle.
-      [points[0], points[points.length - 1]].forEach(([x, y]) => {
-        context.beginPath();
-        context.arc(x, y, 15.5, 0, Math.PI * 2);
-        context.fillStyle = gradient;
-        context.fill();
-      });
-
       context.beginPath();
       context.moveTo(points[0][0] - 4, points[0][1]);
       context.bezierCurveTo(points[1][0] - 3, points[1][1], points[1][0] - 3, points[1][1], points[2][0] - 2, points[2][1]);
