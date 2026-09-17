@@ -58,6 +58,7 @@ if (chromosomeCanvas) {
     context.rotate(rotation + Math.sin(phase * 0.7) * 0.025);
     context.scale(scale, scale);
     context.lineCap = 'round';
+    context.lineJoin = 'round';
 
     const chromatids = [
       [[-42, -130], [-22, -64], [0, 0], [28, 68], [48, 132]],
@@ -76,9 +77,20 @@ if (chromosomeCanvas) {
       context.bezierCurveTo(points[3][0], points[3][1], points[3][0], points[3][1], points[4][0], points[4][1]);
       context.strokeStyle = gradient;
       context.lineWidth = 31;
+      context.lineCap = 'round';
+      context.lineJoin = 'round';
       context.shadowColor = rgba(colors.blue, 0.13);
       context.shadowBlur = 14;
       context.stroke();
+
+      // Explicitly cap both ends so the chromosome tips stay fully rounded
+      // across browsers and at every animation angle.
+      [points[0], points[points.length - 1]].forEach(([x, y]) => {
+        context.beginPath();
+        context.arc(x, y, 15.5, 0, Math.PI * 2);
+        context.fillStyle = gradient;
+        context.fill();
+      });
 
       context.beginPath();
       context.moveTo(points[0][0] - 4, points[0][1]);
@@ -86,6 +98,8 @@ if (chromosomeCanvas) {
       context.bezierCurveTo(points[3][0] - 3, points[3][1], points[3][0] - 3, points[3][1], points[4][0] - 4, points[4][1]);
       context.strokeStyle = rgba('#ffffff', 0.34);
       context.lineWidth = 4;
+      context.lineCap = 'round';
+      context.lineJoin = 'round';
       context.shadowBlur = 0;
       context.stroke();
     });
