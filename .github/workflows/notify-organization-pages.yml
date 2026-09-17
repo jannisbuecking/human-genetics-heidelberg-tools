@@ -10,11 +10,11 @@ permissions: {}
 jobs:
   dispatch:
     runs-on: ubuntu-latest
+    env:
+      ORG_PAGES_DISPATCH_TOKEN: ${{ secrets.ORG_PAGES_DISPATCH_TOKEN }}
     steps:
       - name: Trigger organization deployment
-        if: ${{ secrets.ORG_PAGES_DISPATCH_TOKEN != '' }}
-        env:
-          ORG_PAGES_DISPATCH_TOKEN: ${{ secrets.ORG_PAGES_DISPATCH_TOKEN }}
+        if: ${{ env.ORG_PAGES_DISPATCH_TOKEN != '' }}
         run: |
           curl --fail --request POST \
             --header "Accept: application/vnd.github+json" \
