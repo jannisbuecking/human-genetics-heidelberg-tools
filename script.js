@@ -29,6 +29,12 @@ if (chromosomeCanvas) {
     return `rgba(${color.r},${color.g},${color.b},${alpha})`;
   }
 
+  function overWhite(hex, alpha) {
+    const color = hexToRgb(hex);
+    const blend = channel => Math.round(channel * alpha + 255 * (1 - alpha));
+    return `rgb(${blend(color.r)},${blend(color.g)},${blend(color.b)})`;
+  }
+
   function resizeCanvas() {
     const bounds = chromosomeCanvas.getBoundingClientRect();
     if (!bounds.width || !bounds.height) return;
@@ -52,6 +58,20 @@ if (chromosomeCanvas) {
     context.fill();
   }
 
+  function semicircleCap(point, neighbour, radius, fillStyle, isStart) {
+    const direction = isStart
+      ? Math.atan2(neighbour[1] - point[1], neighbour[0] - point[0])
+      : Math.atan2(point[1] - neighbour[1], point[0] - neighbour[0]);
+    const startAngle = isStart ? direction + Math.PI / 2 : direction - Math.PI / 2;
+    const endAngle = isStart ? direction + Math.PI * 1.5 : direction + Math.PI / 2;
+
+    context.beginPath();
+    context.arc(point[0], point[1], radius, startAngle, endAngle);
+    context.closePath();
+    context.fillStyle = fillStyle;
+    context.fill();
+  }
+
   function drawChromosome(centerX, centerY, scale, rotation, phase) {
     context.save();
     context.translate(centerX, centerY);
@@ -67,9 +87,9 @@ if (chromosomeCanvas) {
 
     chromatids.forEach((points, index) => {
       const gradient = context.createLinearGradient(-60, -120, 60, 130);
-      gradient.addColorStop(0, rgba(colors.aqua, 0.76));
-      gradient.addColorStop(0.52, rgba(colors.blue, 0.96));
-      gradient.addColorStop(1, rgba(index ? colors.coral : colors.deep, 0.9));
+      gradient.addColorStop(0, overWhite(colors.aqua, 0.76));
+      gradient.addColorStop(0.52, overWhite(colors.blue, 0.96));
+      gradient.addColorStop(1, overWhite(index ? colors.coral : colors.deep, 0.9));
 
       context.beginPath();
       context.moveTo(points[0][0], points[0][1]);
@@ -77,11 +97,13 @@ if (chromosomeCanvas) {
       context.bezierCurveTo(points[3][0], points[3][1], points[3][0], points[3][1], points[4][0], points[4][1]);
       context.strokeStyle = gradient;
       context.lineWidth = 31;
-      context.lineCap = 'round';
+      context.lineCap = 'butt';
       context.lineJoin = 'round';
       context.shadowColor = rgba(colors.blue, 0.13);
       context.shadowBlur = 14;
       context.stroke();
+      semicircleCap(points[0], points[1], 15.5, gradient, true);
+      semicircleCap(points[points.length - 1], points[points.length - 2], 15.5, gradient, false);
 
       context.beginPath();
       context.moveTo(points[0][0] - 4, points[0][1]);
@@ -89,10 +111,24 @@ if (chromosomeCanvas) {
       context.bezierCurveTo(points[3][0] - 3, points[3][1], points[3][0] - 3, points[3][1], points[4][0] - 4, points[4][1]);
       context.strokeStyle = rgba('#ffffff', 0.34);
       context.lineWidth = 4;
-      context.lineCap = 'round';
+      context.lineCap = 'butt';
       context.lineJoin = 'round';
       context.shadowBlur = 0;
       context.stroke();
+      semicircleCap(
+        [points[0][0] - 4, points[0][1]],
+        [points[1][0] - 3, points[1][1]],
+        2,
+        rgba('#ffffff', 0.34),
+        true
+      );
+      semicircleCap(
+        [points[points.length - 1][0] - 4, points[points.length - 1][1]],
+        [points[points.length - 2][0] - 3, points[points.length - 2][1]],
+        2,
+        rgba('#ffffff', 0.34),
+        false
+      );
     });
 
     circle(0, 0, 18, colors.coral, 0.96);
