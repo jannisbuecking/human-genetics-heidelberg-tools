@@ -1,7 +1,7 @@
 .hero { align-items: center; display:flex; min-height:calc(100vh - 106px); padding:96px 48px; }
 .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .tool-card { border-radius: 12px; }
-.button, .nav-button { border-radius: 8px; }
+.button, .nav-button { align-items: center; border-radius: 8px; display: inline-flex; justify-content: center; text-align: center; }
 .argus { background: #dce8ee; }
 .argus-logo { color: #00ae9b; font-size: clamp(56px, 6vw, 80px); font-weight: 800; letter-spacing: -.08em; }
 .mammoth .tool-logo-wrap { align-items: flex-start; flex-direction: column; gap: 8px; justify-content: center; }
