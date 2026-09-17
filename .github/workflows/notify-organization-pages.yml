@@ -1,0 +1,23 @@
+name: Notify organization website
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger organization deployment
+        if: ${{ secrets.ORG_PAGES_DISPATCH_TOKEN != '' }}
+        env:
+          ORG_PAGES_DISPATCH_TOKEN: ${{ secrets.ORG_PAGES_DISPATCH_TOKEN }}
+        run: |
+          curl --fail --request POST \
+            --header "Accept: application/vnd.github+json" \
+            --header "Authorization: Bearer ${ORG_PAGES_DISPATCH_TOKEN}" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/Institute-of-Human-Genetics-Heidelberg/institute-of-human-genetics-heidelberg.github.io/dispatches \
+            --data '{"event_type":"source-updated"}'
