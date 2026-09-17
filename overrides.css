@@ -1,2 +1,24 @@
-.hero { display:block; min-height:500px; padding:120px 48px 95px; }
-@media (max-width:700px) { .hero { padding:78px 20px 70px; } }
+.hero { align-items: center; display:flex; min-height:calc(100vh - 106px); padding:96px 48px; }
+.tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tool-card { border-radius: 12px; }
+.button, .nav-button { border-radius: 8px; }
+.argus { background: #dce8ee; }
+.argus-logo { color: #00ae9b; font-size: clamp(56px, 6vw, 80px); font-weight: 800; letter-spacing: -.08em; }
+.mammoth .tool-logo-wrap { align-items: flex-start; flex-direction: column; gap: 8px; justify-content: center; }
+.mammoth-logo { width: 145px; max-height: 92px; }
+.mammoth-wordmark { color: #545252; font-size: 26px; font-weight: 800; letter-spacing: -.06em; }
+.tool-card { text-align: center; }
+.tool-card .tool-logo-wrap { align-items: center; justify-content: center; }
+.tool-card .tool-description { margin-left: auto; margin-right: auto; }
+.tool-card .card-links { justify-content: center; }
+.tool-card .card-top { text-align: left; }
+.card-links { flex-wrap: wrap; justify-content: flex-start; gap: 16px; }
+.card-links .text-link, .card-links .repo-link { border-bottom: 1px solid currentColor; color: inherit; font: 11px "DM Mono", monospace; font-weight: 500; letter-spacing: .08em; padding-bottom: 2px; text-decoration: none; text-transform: uppercase; }
+.card-links .text-link span { display: none; }
+.legal-page { max-width: 900px; margin: 0 auto; padding: 72px 48px 100px; }
+.legal-page h1 { font-size: clamp(42px, 5vw, 66px); }
+.legal-page h2 { margin-top: 42px; font-size: 22px; letter-spacing: -.03em; }
+.legal-page p { max-width: 780px; color: #3e5a62; font-size: 15px; line-height: 1.7; }
+.legal-page .legal-address { white-space: pre-line; }
+@media (max-width: 860px) { .tool-grid { grid-template-columns: 1fr; } }
+@media (max-width:700px) { .hero { min-height:calc(100vh - 82px); padding:78px 20px 70px; } nav a:not(.nav-button) { display:block; } }
