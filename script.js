@@ -46,21 +46,9 @@ if (chromosomeCanvas) {
   }
 
   function circle(x, y, radius, color, alpha = 1) {
-    const gradient = context.createRadialGradient(
-      x - radius * 0.28,
-      y - radius * 0.32,
-      radius * 0.08,
-      x,
-      y,
-      radius
-    );
-    gradient.addColorStop(0, rgba('#ffffff', alpha * 0.9));
-    gradient.addColorStop(0.24, rgba(color, alpha));
-    gradient.addColorStop(1, rgba(colors.deep, alpha * 0.9));
-
     context.beginPath();
     context.arc(x, y, radius, 0, Math.PI * 2);
-    context.fillStyle = gradient;
+    context.fillStyle = rgba(color, alpha);
     context.fill();
   }
 
@@ -112,26 +100,28 @@ if (chromosomeCanvas) {
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       context.clearRect(0, 0, width, height);
 
-      const time = reducedMotion ? 0.8 : timestamp * 0.00055;
+      const time = reducedMotion ? 0.8 : timestamp * 0.00042;
       const orbit = time * 0.24;
-      const baseScale = Math.min(width / 520, height / 420, 1.04);
-      const firstX = width * 0.41 + Math.cos(orbit) * 20;
+      const baseScale = Math.min(width / 520, height / 420, 1);
+      const firstX = width * 0.42 + Math.cos(orbit) * 20;
       const firstY = height * 0.5 + Math.sin(orbit * 0.73) * 22;
       const secondX = width * 0.69 + Math.cos(orbit + Math.PI) * 23;
       const secondY = height * 0.5 + Math.sin(orbit * 0.81 + 2.1) * 19;
+      const firstRock = -0.2 + Math.sin(time * 0.45) * 0.08 + Math.sin(time * 0.17) * 0.03;
+      const secondRock = 0.18 + Math.sin(time * 0.38 + 2) * 0.07 + Math.sin(time * 0.13 + 1) * 0.025;
 
       drawChromosome(
         firstX,
         firstY,
         baseScale * (1 + Math.sin(orbit * 0.59) * 0.045),
-        -0.24 + time * 0.115,
+        firstRock,
         time
       );
       drawChromosome(
         secondX,
         secondY,
         baseScale * 0.94 * (1 + Math.cos(orbit * 0.67) * 0.04),
-        0.22 - time * 0.092,
+        secondRock,
         time + 2
       );
     }
