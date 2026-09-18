@@ -1,6 +1,34 @@
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
 
+const toolCards = [...document.querySelectorAll('.tool-card')];
+
+if (toolCards.length) {
+  const reduceCardMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  toolCards.forEach((card, index) => {
+    card.style.setProperty('--reveal-order', index);
+    card.classList.add('reveal-ready');
+  });
+
+  if (reduceCardMotion || !('IntersectionObserver' in window)) {
+    toolCards.forEach(card => card.classList.add('is-visible'));
+  } else {
+    const cardRevealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        cardRevealObserver.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: '0px 0px -8% 0px'
+    });
+
+    toolCards.forEach(card => cardRevealObserver.observe(card));
+  }
+}
+
 const chromosomeCanvas = document.getElementById('chromosome-canvas');
 
 if (chromosomeCanvas) {
