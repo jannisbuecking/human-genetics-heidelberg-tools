@@ -3,6 +3,9 @@
 .horizontal-tools .section-heading { max-width: 1224px; margin: 0 auto; padding: 36px 48px 22px; text-align: center; }
 .horizontal-tools h2 { font-size: clamp(34px, 4.8vw, 60px); margin: 0; }
 .horizontal-scene { --horizontal-base-size: 116px; position: relative; isolation: isolate; }
+/* Measure the same stable viewport in both the pinned and stacked layouts.
+   Mobile browser toolbars may resize innerHeight while 100svh stays fixed. */
+.horizontal-size-reference { position: absolute; top: 0; left: 0; width: 0; height: 100vh; height: 100svh; visibility: hidden; pointer-events: none; contain: strict; }
 .horizontal-stage { position: relative; }
 .horizontal-viewport { position: relative; padding: 28px 48px 60px; }
 .horizontal-viewport:focus-visible { outline: 2px solid var(--aqua); outline-offset: -4px; }

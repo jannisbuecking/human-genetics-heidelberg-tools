@@ -19,6 +19,10 @@
   const primeEnd = section.querySelector('.horizontal-end');
   const phraseLink = document.getElementById('phrase-link');
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const sizeReference = document.createElement('div');
+  sizeReference.className = 'horizontal-size-reference';
+  sizeReference.setAttribute('aria-hidden', 'true');
+  scene.append(sizeReference);
   const ns = 'http://www.w3.org/2000/svg';
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   let enabled = false, queued = false, layingOut = false;
@@ -26,6 +30,7 @@
   let startCamera = 0, travel = 0, distance = 0, camera = 0, markerSize = 116;
   let nodes = [], phosphates = [], firstX = 0, lastX = 0, ribosomeScale = 1;
   let cameraReady = false, lastTime = 0, wavePhase = 0, flow = 0;
+  let layoutHeight = 0, layoutQueued = false, forceLayout = false;
 
   function element(tag, attributes) {
     const node = document.createElementNS(ns, tag);
@@ -37,6 +42,20 @@
   }
   function progress() {
     return distance ? clamp(-journey.getBoundingClientRect().top / distance, 0, 1) : 0;
+  }
+  function scheduleLayout(force = false) {
+    forceLayout = forceLayout || force;
+    if (layoutQueued) return;
+    layoutQueued = true;
+    requestAnimationFrame(() => {
+      layoutQueued = false;
+      const height = sizeReference.getBoundingClientRect().height;
+      const changed = Math.abs(section.clientWidth - width) > 1 || Math.abs(height - layoutHeight) > 1;
+      const shouldLayout = forceLayout || changed;
+      forceLayout = false;
+      if (shouldLayout) layout();
+      else request();
+    });
   }
   function yAt(x) {
     if (motionPreference.matches) return baseline;
@@ -55,6 +74,8 @@
     const oldProgress = progress();
     const oldTop = journey.getBoundingClientRect().top;
     const wasPinned = wasEnabled && oldTop <= 0 && oldTop >= -distance;
+    const wasAfter = wasEnabled && oldTop < -distance;
+    const oldBottomOffset = journey.getBoundingClientRect().bottom;
     section.classList.remove('is-enhanced');
     scene.style.removeProperty('--horizontal-card-height');
     units.forEach(unit => unit.removeAttribute('style'));
@@ -62,6 +83,7 @@
     track.removeAttribute('style');
     journey.style.removeProperty('height');
     width = section.clientWidth;
+    layoutHeight = sizeReference.getBoundingClientRect().height;
     const mobile = width <= 700;
     const cardWidth = mobile ? Math.max(230, width - 44) : Math.min(520, Math.max(350, width * .44));
     tools.forEach(unit => { unit.style.width = `${cardWidth}px`; });
@@ -70,8 +92,10 @@
     const headingHeight = section.querySelector('.section-heading').getBoundingClientRect().height;
     const stageTop = headingHeight + 10;
     scene.style.setProperty('--horizontal-stage-top', `${stageTop}px`);
-    // A naturally flowing layout keeps every link available in very short windows.
-    enabled = window.innerHeight >= stageTop + cardHeight + 300 && width >= 300;
+    // Use the CSS scene's stable viewport, not Safari's toolbar-dependent height.
+    // Reserve enough room for the card, its stem, and the lower subunit.
+    // Only genuinely short windows use the naturally flowing layout.
+    enabled = layoutHeight >= stageTop + cardHeight + 200 && width >= 300;
     if (!enabled) {
       layingOut = false;
       return;
@@ -135,6 +159,7 @@
     distance = Math.max(travel * .82, sceneHeight * 3);
     journey.style.height = `${sceneHeight + distance}px`;
     if (wasPinned) window.scrollTo({ top: window.scrollY + journey.getBoundingClientRect().top + oldProgress * distance, behavior: 'instant' });
+    else if (wasAfter) window.scrollTo({ top: window.scrollY + journey.getBoundingClientRect().bottom - oldBottomOffset, behavior: 'instant' });
     layingOut = false;
     cameraReady = false;
     lastTime = 0;
@@ -223,20 +248,21 @@
     if (location.hash.startsWith('#tool-')) goToCard(location.hash.slice(1), true);
   }
   window.addEventListener('scroll', request, { passive: true });
-  window.addEventListener('resize', layout, { passive: true });
+  // Ignore visual-height-only toolbar changes. Width and stable-height changes
+  // (rotation, split view, or desktop resizing) still rebuild the geometry.
+  window.addEventListener('resize', () => scheduleLayout(), { passive: true });
   window.addEventListener('hashchange', routeHash);
   document.addEventListener('visibilitychange', request);
   motionPreference.addEventListener('change', request);
   cards.forEach(card => card.querySelectorAll('img').forEach(image => {
-    if (!image.complete) image.addEventListener('load', layout, { once: true });
+    if (!image.complete) image.addEventListener('load', () => scheduleLayout(true), { once: true });
   }));
   if (window.ResizeObserver) {
-    let previousWidth = section.clientWidth;
-    new ResizeObserver(() => {
-      if (section.clientWidth !== previousWidth) { previousWidth = section.clientWidth; layout(); }
-    }).observe(section);
+    const sizeObserver = new ResizeObserver(() => scheduleLayout());
+    sizeObserver.observe(section);
+    sizeObserver.observe(sizeReference);
   }
   layout();
   routeHash();
-  if (document.fonts) document.fonts.ready.then(() => { layout(); routeHash(); });
+  if (document.fonts) document.fonts.ready.then(() => { scheduleLayout(true); });
 })();
