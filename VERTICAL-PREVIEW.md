@@ -1,13 +1,11 @@
-# Vertical RNA preview — test website 2
+# RNA and Panels test website
 
-Live website: https://jannisbuecking.github.io/human-genetics-heidelberg-tools-rna-preview/vertical/
+Current test website: https://jannisbuecking.github.io/human-genetics-heidelberg-tools-rna-preview/
 
-Horizontal comparison: https://jannisbuecking.github.io/human-genetics-heidelberg-tools-rna-preview/
+The former horizontal preview entry point now opens the vertical RNA layout by default. The RNA / Panels control above the tools switches between the vertical strand and the original main-branch tool grid. The existing /vertical/ address opens the same interface.
 
-Source branch: `test/rna-vertical`. Open `vertical.html` locally. The second website uses ordinary vertical page scrolling, one single RNA backbone with all base attachments on the same side, and the same 16 interface positions as the horizontal version: AUG → aRgus → G C → MfAP → A U → MAMMOTH → C G → SYS → UAA. Each tool replaces a base tile; no duplicate letter is shown below a tool. The abbreviated interface layout is not a literal biological coding sequence.
+Open `horizontal.html` or `vertical.html` locally. Both use `vertical.css` and `vertical.js`, plus the original shared styles and terminal script. Each tool article occurs only once: the same DOM is rearranged into the panel grid, keeping IDs, descriptions, logos, links, keyboard focus, and terminal destinations consistent. Switching to Panels hides the molecular artwork and suspends its animation. RNA starts as the selected view on a fresh load.
 
-The original header, hero, terminal animation, descriptions, logos, and tool destinations are retained. The large base tiles, centered tool content, original colors, translucent ribosome, and restrained strand movement follow the horizontal preview. Only the schematic ribosome is rotated; letters, logos, and text remain upright. The 2D ribosome artwork uses https://www.rcsb.org/structure/9RU8 as an anatomical reference, not as an exact atomic projection.
+Panels uses the original shared card styling and the original two-column / one-column-at-860px grid from the main repository. RNA keeps the enlarged bases, centered cards, single backbone, faint rotated ribosome, and short strand: AUG → aRgus → G C → MfAP → A U → MAMMOTH → C G → SYS → UAA. The abbreviated strand and tool tiles are interface symbols, not a literal biological coding sequence. The schematic uses https://www.rcsb.org/structure/9RU8 as anatomical reference.
 
-The background uses a sticky scene with stable `100svh` height. The sequence stays in natural document flow with no nested scroller, scroll interception, or height-dependent switch of layout. Mobile toolbar changes do not rebuild the sequence. Width changes and real element-size changes update the vector geometry. Reduced-motion settings produce a stationary straight strand.
-
-Publishing adds only the `vertical/` directory to the separate preview repository. The horizontal website, original `main` branch, and production site remain unchanged.
+The original header and hero remain unchanged. The production main branch and its Pages configuration are not part of this publication. Source changes are retained on the test/rna-vertical and test/rna-horizontal branches. The preview repository publishes its preview branch.

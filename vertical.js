@@ -15,6 +15,9 @@
   const ribosomeStage = section.querySelector('.vertical-ribosome-stage');
   const schematic = section.querySelector('#vertical-ribosome-schematic');
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const viewSwitch = section.querySelector('.tool-view-switch');
+  const viewButtons = [...section.querySelectorAll('[data-tool-view]')];
+  const isRnaView = () => section.dataset.view !== 'panels';
   const ns = 'http://www.w3.org/2000/svg';
   const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
   let queued = false, geometryQueued = false, measuring = false;
@@ -30,6 +33,7 @@
     if (!queued) { queued = true; requestAnimationFrame(frame); }
   }
   function layout() {
+    if (!isRnaView()) return;
     axisX = axis.offsetLeft;
     height = track.offsetHeight;
     mobile = landscape.clientWidth <= 700;
@@ -59,12 +63,12 @@
     request();
   }
   function scheduleGeometry() {
-    if (geometryQueued) return;
+    if (geometryQueued || !isRnaView()) return;
     geometryQueued = true;
     requestAnimationFrame(() => { geometryQueued = false; layout(); });
   }
   function measureCards() {
-    if (measuring) return;
+    if (measuring || !isRnaView()) return;
     measuring = true;
     landscape.style.removeProperty('--vertical-card-height');
     const cardHeight = Math.ceil(Math.max(...cards.map(card => card.getBoundingClientRect().height)));
@@ -80,7 +84,7 @@
   }
   function frame(time) {
     queued = false;
-    if (!nodes.length) return;
+    if (!isRnaView() || !nodes.length) return;
     phase = time / 1900;
     const bounds = track.getBoundingClientRect();
     const stageBounds = ribosomeStage.getBoundingClientRect();
@@ -109,6 +113,25 @@
     });
     cards.forEach(card => card.classList.toggle('is-current', card.parentElement === nearest));
     if (visible && !motionPreference.matches) request();
+  }
+  function setView(view) {
+    if (!['rna', 'panels'].includes(view) || section.dataset.view === view) return;
+    const before = viewSwitch.getBoundingClientRect().top;
+    section.dataset.view = view;
+    viewButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.toolView === view)));
+    units.forEach(unit => unit.style.removeProperty('transform'));
+    cards.forEach(card => {
+      card.classList.remove('is-current');
+      card.classList.add('is-visible');
+    });
+    if (isRnaView()) measureCards();
+    // Keep the selector in place if the shorter grid changes page height.
+    const movement = viewSwitch.getBoundingClientRect().top - before;
+    if (Math.abs(movement) > 1) window.scrollBy({ top: movement, behavior: 'instant' });
+  }
+  if (viewSwitch) {
+    viewButtons.forEach(button => button.addEventListener('click', () => setView(button.dataset.toolView)));
+    viewSwitch.hidden = false;
   }
   window.addEventListener('scroll', request, { passive: true });
   window.addEventListener('resize', () => {

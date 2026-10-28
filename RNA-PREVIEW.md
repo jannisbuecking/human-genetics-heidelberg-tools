@@ -1,17 +1,11 @@
-# Horizontal RNA preview
+# RNA and Panels test website
 
-Open `horizontal.html` for the approved horizontal RNA version. It uses the original shared styles, assets, and terminal script. The tool content and destinations are preserved.
+Current test website: https://jannisbuecking.github.io/human-genetics-heidelberg-tools-rna-preview/
 
-Test branch: `test/rna-horizontal`
+The former horizontal preview entry point now opens the vertical RNA layout by default. The RNA / Panels control above the tools switches between the vertical strand and the original main-branch tool grid. The existing /vertical/ address opens the same interface.
 
-Shareable website: https://jannisbuecking.github.io/human-genetics-heidelberg-tools-rna-preview/
+Open `horizontal.html` or `vertical.html` locally. Both use `vertical.css` and `vertical.js`, plus the original shared styles and terminal script. Each tool article occurs only once: the same DOM is rearranged into the panel grid, keeping IDs, descriptions, logos, links, keyboard focus, and terminal destinations consistent. Switching to Panels hides the molecular artwork and suspends its animation. RNA starts as the selected view on a fresh load.
 
-The website is published separately from the `preview` branch of https://github.com/jannisbuecking/human-genetics-heidelberg-tools-rna-preview. The original repository’s `main` branch and GitHub Pages configuration remain unchanged.
+Panels uses the original shared card styling and the original two-column / one-column-at-860px grid from the main repository. RNA keeps the enlarged bases, centered cards, single backbone, faint rotated ribosome, and short strand: AUG → aRgus → G C → MfAP → A U → MAMMOTH → C G → SYS → UAA. The abbreviated strand and tool tiles are interface symbols, not a literal biological coding sequence. The schematic uses https://www.rcsb.org/structure/9RU8 as anatomical reference.
 
-The strand layout is AUG → aRgus → G C → MfAP → A U → MAMMOTH → C G → SYS → UAA. Full tool tiles replace base glyphs, so this abbreviated interface diagram is not a literal biological coding sequence. The ribosome is a simplified side-view schematic with https://www.rcsb.org/structure/9RU8 as anatomical reference.
-
-## Mobile scrolling correction
-
-The layout now measures the stable CSS small viewport (`100svh`) instead of using the toolbar-dependent `window.innerHeight` to choose between the horizontal scene and the stacked fallback. Toolbar-only resize events no longer rebuild the scene. Width changes, orientation changes, and real changes to the stable viewport still update the geometry. The fitting threshold reserves 200 pixels beyond the heading and measured card, allowing the horizontal scene to fit a normal phone with its toolbar expanded. Very short windows retain the accessible stacked layout. Genuine geometry updates preserve the position within or below the scene.
-
-Viewport unit reference: https://webkit.org/blog/12445/new-webkit-features-in-safari-15-4/
+The original header and hero remain unchanged. The production main branch and its Pages configuration are not part of this publication. Source changes are retained on the test/rna-vertical and test/rna-horizontal branches. The preview repository publishes its preview branch.

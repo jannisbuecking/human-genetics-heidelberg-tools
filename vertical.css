@@ -1,4 +1,4 @@
-/* Variant 2: the original header and hero are unchanged. */
+/* Vertical RNA and original panel views; the original header and hero are unchanged. */
 .tools-section.vertical-tools { padding: 36px 0 48px; background: #061821; overflow: clip; }
 .vertical-tools .section-heading { max-width: 1224px; margin: 0 auto 12px; padding: 0 48px; text-align: center; }
 .vertical-tools h2 { font-size: clamp(34px, 4.8vw, 60px); margin: 0; }
@@ -20,14 +20,14 @@
 .vertical-letter { width: var(--vertical-base-size); }
 .vertical-unit .nucleotide-mark { width: var(--vertical-base-size); height: var(--vertical-base-size); display: grid; place-items: center; border: 1px solid #80cdd266; border-radius: 8px; background: var(--blue-dark); color: var(--aqua); font: 500 52px 'DM Mono', monospace; }
 .vertical-tool { width: calc(100% - var(--vertical-axis) - var(--vertical-stem) - 48px); max-width: 640px; }
-.vertical-unit .tool-card { width: 100%; min-height: var(--vertical-card-height, 0px); padding: 29px; gap: 22px; border-radius: 8px; text-align: center; align-items: center; scroll-margin-block: 28px; }
-.vertical-unit .tool-card.reveal-ready { opacity: 1; transform: none; transition: border-color 200ms ease, box-shadow 200ms ease; transition-delay: 0s; will-change: auto; }
-.vertical-unit .tool-card.is-current { border-color: #80cdd280; }
-.vertical-unit .tool-logo-wrap { flex-shrink: 0; width: 100%; justify-content: center; }
-.vertical-unit .tool-description { font-size: 15px; line-height: 1.6; text-align: center; }
-.vertical-unit .card-links { margin-top: auto; width: 100%; justify-content: center; }
-.vertical-unit .card-links a { justify-content: center; }
-.vertical-unit .sys-logo { max-width: 310px; }
+.vertical-tools[data-view="rna"] .vertical-unit .tool-card { width: 100%; min-height: var(--vertical-card-height, 0px); padding: 29px; gap: 22px; border-radius: 8px; text-align: center; align-items: center; scroll-margin-block: 28px; }
+.vertical-tools .tool-card.reveal-ready { opacity: 1; transform: none; transition: border-color 200ms ease, box-shadow 200ms ease; transition-delay: 0s; will-change: auto; }
+.vertical-tools[data-view="rna"] .vertical-unit .tool-card.is-current { border-color: #80cdd280; }
+.vertical-tools[data-view="rna"] .vertical-unit .tool-logo-wrap { flex-shrink: 0; width: 100%; justify-content: center; }
+.vertical-tools[data-view="rna"] .vertical-unit .tool-description { font-size: 15px; line-height: 1.6; text-align: center; }
+.vertical-tools[data-view="rna"] .vertical-unit .card-links { margin-top: auto; width: 100%; justify-content: center; }
+.vertical-tools[data-view="rna"] .vertical-unit .card-links a { justify-content: center; }
+.vertical-tools[data-view="rna"] .vertical-unit .sys-logo { max-width: 310px; }
 .vertical-prime { position: absolute; left: calc(var(--vertical-axis) - 8px); font: 13px 'DM Mono', monospace; color: var(--aqua); pointer-events: none; }
 .vertical-start { top: 32px; }
 .vertical-end { bottom: 32px; }
@@ -44,20 +44,49 @@
   .vertical-unit { margin-right: 22px; }
   .vertical-tool { width: calc(100% - var(--vertical-axis) - var(--vertical-stem) - 22px); }
   .vertical-unit .nucleotide-mark { font-size: 36px; border-radius: 7px; }
-  .vertical-unit .tool-card { padding: 25px 20px; gap: 21px; }
-  .vertical-unit .tool-description { font-size: 14px; line-height: 1.65; }
-  .vertical-unit .tool-logo-wrap { height: 62px; }
-  .vertical-unit .argus-logo { font-size: 46px; }
-  .vertical-unit .mfap-logo { width: 142px; }
-  .vertical-unit .mammoth-logo { height: 52px; }
-  .vertical-unit .mammoth-wordmark { font-size: 20px; }
-  .vertical-unit .mammoth .tool-logo-wrap { gap: 10px; }
-  .vertical-unit .card-links { padding-top: 20px; gap: 9px; }
-  .vertical-unit .card-links a { font-size: 12px; padding: 10px 12px; gap: 7px; }
-  .vertical-unit .card-links a::before { width: 14px; height: 14px; }
+  .vertical-tools[data-view="rna"] .vertical-unit .tool-card { padding: 25px 20px; gap: 21px; }
+  .vertical-tools[data-view="rna"] .vertical-unit .tool-description { font-size: 14px; line-height: 1.65; }
+  .vertical-tools[data-view="rna"] .vertical-unit .tool-logo-wrap { height: 62px; }
+  .vertical-tools[data-view="rna"] .vertical-unit .argus-logo { font-size: 46px; }
+  .vertical-tools[data-view="rna"] .vertical-unit .mfap-logo { width: 142px; }
+  .vertical-tools[data-view="rna"] .vertical-unit .mammoth-logo { height: 52px; }
+  .vertical-tools[data-view="rna"] .vertical-unit .mammoth-wordmark { font-size: 20px; }
+  .vertical-tools[data-view="rna"] .vertical-unit .mammoth .tool-logo-wrap { gap: 10px; }
+  .vertical-tools[data-view="rna"] .vertical-unit .card-links { padding-top: 20px; gap: 9px; }
+  .vertical-tools[data-view="rna"] .vertical-unit .card-links a { font-size: 12px; padding: 10px 12px; gap: 7px; }
+  .vertical-tools[data-view="rna"] .vertical-unit .card-links a::before { width: 14px; height: 14px; }
   .vertical-start { top: 20px; }
   .vertical-end { bottom: 22px; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .vertical-unit .tool-card { transition: none; }
+  .vertical-tools[data-view="rna"] .vertical-unit .tool-card { transition: none; }
+}
+
+/* Compact view selector, using the original portal colors. */
+.tool-view-switch { display: flex; justify-content: center; width: fit-content; margin: 24px auto 20px; padding: 4px; gap: 4px; border: 1px solid #80cdd244; border-radius: 10px; background: #061821; }
+.tool-view-switch[hidden] { display: none; }
+.tool-view-switch button { min-height: 44px; min-width: 104px; padding: 10px 24px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #aebfc6; font: 600 14px Manrope, Arial, sans-serif; cursor: pointer; transition: background 180ms ease, color 180ms ease, border-color 180ms ease; }
+.tool-view-switch button:hover { color: #fff; background: #003a5266; }
+.tool-view-switch button[aria-pressed="true"] { background: var(--blue); border-color: #80cdd244; color: #fff; }
+.tool-view-switch button:focus-visible { outline: 2px solid var(--aqua); outline-offset: 3px; }
+/* Restore the original main-branch grid and card styling in Panels mode.
+   The same four articles stay in the DOM; only their layout changes. */
+.vertical-tools[data-view="panels"] .vertical-landscape { max-width: 1320px; padding: 0 48px; }
+.vertical-tools[data-view="panels"] .vertical-sequence { padding: 0; }
+.vertical-tools[data-view="panels"] .vertical-track { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.vertical-tools[data-view="panels"] .vertical-tool { display: contents; }
+.vertical-tools[data-view="panels"] .vertical-letter,
+.vertical-tools[data-view="panels"] .vertical-axis,
+.vertical-tools[data-view="panels"] .vertical-backbone,
+.vertical-tools[data-view="panels"] .vertical-ribosome-stage,
+.vertical-tools[data-view="panels"] .vertical-prime { display: none; }
+@media(max-width:860px) {
+  .vertical-tools[data-view="panels"] .vertical-track { grid-template-columns: 1fr; }
+}
+@media(max-width:700px) {
+  .tool-view-switch { margin-top: 20px; margin-bottom: 24px; }
+  .vertical-tools[data-view="panels"] .vertical-landscape { padding: 0 20px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .tool-view-switch button { transition: none; }
 }

@@ -6,9 +6,9 @@
   <title>Institute of Human Genetics Heidelberg | Digital Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20261028-01" />
-  <link rel="stylesheet" href="overrides.css?v=20261028-01" />
-  <link rel="stylesheet" href="vertical.css?v=20261028-01" />
+  <link rel="stylesheet" href="styles.css?v=20261028-02" />
+  <link rel="stylesheet" href="overrides.css?v=20261028-02" />
+  <link rel="stylesheet" href="vertical.css?v=20261028-02" />
 </head>
 <body>
   <a class="skip-link" href="#tools">Skip to tools</a>
@@ -26,13 +26,17 @@
         <p class="phrase-rotator"><a id="phrase-link" class="phrase-link" href="#tool-argus" aria-label="Explore our tools"><span class="prompt" aria-hidden="true">&gt;</span><span id="phrase-text"></span><span class="caret" aria-hidden="true"></span><span class="hint" aria-hidden="true"><kbd>&crarr;</kbd><span id="phrase-hint-text"></span><span class="hint-arrow">&darr;</span></span></a></p>
       </div>
     </section>
-    <section class="tools-section vertical-tools" id="tools" aria-label="Web applications">
+    <section class="tools-section vertical-tools" data-view="rna" id="tools" aria-label="Web applications">
       <div class="vertical-layout">
         <div class="vertical-content">
           <div class="section-heading">
             <h2>Arcanum vitae explorandum.</h2>
           </div>
-          <div class="vertical-landscape">
+          <div class="tool-view-switch" role="group" aria-label="Tool layout" hidden>
+            <button type="button" data-tool-view="rna" aria-pressed="true" aria-controls="tools-display">RNA</button>
+            <button type="button" data-tool-view="panels" aria-pressed="false" aria-controls="tools-display">Panels</button>
+          </div>
+          <div class="vertical-landscape" id="tools-display">
             <div class="vertical-ribosome-stage" aria-hidden="true"><svg class="vertical-ribosome" aria-hidden="true"><g id="vertical-ribosome-schematic"><path class="subunit-large" data-subunit="60S" d="M-178 -25 C-204 -54 -202 -111 -168 -142 C-155 -181 -108 -201 -67 -187 C-30 -217 24 -214 62 -188 C108 -204 158 -176 170 -141 C207 -122 212 -78 188 -48 C169 -20 128 -16 91 -25 C48 -32 28 -47 -9 -41 C-52 -35 -70 -17 -109 -16 C-137 -14 -160 -15 -178 -25 Z"/><path class="subunit-small" data-subunit="40S" d="M-164 24 C-183 9 -174 -19 -152 -25 C-129 -45 -96 -29 -91 -7 L-67 13 C-31 -4 10 3 35 13 C66 -3 106 5 119 29 C154 35 173 62 158 86 C143 111 109 117 88 117 C53 142 7 144 -23 126 C-58 141 -104 121 -115 97 C-151 101 -181 79 -177 54 C-176 42 -172 33 -164 24 Z"/></g></svg></div>
             <div class="vertical-sequence">
               <div class="vertical-track">
@@ -80,7 +84,7 @@
     </section>
   </main>
   <footer><span>© <span id="year"></span> Institute of Human Genetics Heidelberg</span><a href="impressum.html">Legal notice</a></footer>
-  <script src="script.js?v=20261028-01"></script>
-  <script src="vertical.js?v=20261028-01"></script>
+  <script src="script.js?v=20261028-02"></script>
+  <script src="vertical.js?v=20261028-02"></script>
 </body>
 </html>
