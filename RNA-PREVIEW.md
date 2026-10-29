@@ -1,11 +1,13 @@
-# RNA and Panels test website
+# Horizontal RNA and Panels test website
 
 Current test website: https://jannisbuecking.github.io/human-genetics-heidelberg-tools-rna-preview/
 
-The former horizontal preview entry point now opens the vertical RNA layout by default. The RNA / Panels control above the tools switches between the vertical strand and the original main-branch tool grid. The existing /vertical/ address opens the same interface.
+The default is the horizontal RNA approach. A small, discreet RNA / Panels control is fixed at the bottom right, with mobile safe-area spacing. It switches to the original main-branch two-column tool grid (one column at 860 pixels and below). All four tool cards are reused in place, preserving their IDs, logos, descriptions, destinations, keyboard access, and terminal jump targets.
 
-Open `horizontal.html` or `vertical.html` locally. Both use `vertical.css` and `vertical.js`, plus the original shared styles and terminal script. Each tool article occurs only once: the same DOM is rearranged into the panel grid, keeping IDs, descriptions, logos, links, keyboard focus, and terminal destinations consistent. Switching to Panels hides the molecular artwork and suspends its animation. RNA starts as the selected view on a fresh load.
+When switching within the tools section, Panels opens at the grid heading. Returning to RNA restores the previous position along the strand. Choosing a view while still in the hero does not jump away from the hero. Animation is suspended in Panels mode. The footer leaves room for the fixed control so the legal-notice link remains accessible.
 
-Panels uses the original shared card styling and the original two-column / one-column-at-860px grid from the main repository. RNA keeps the enlarged bases, centered cards, single backbone, faint rotated ribosome, and short strand: AUG → aRgus → G C → MfAP → A U → MAMMOTH → C G → SYS → UAA. The abbreviated strand and tool tiles are interface symbols, not a literal biological coding sequence. The schematic uses https://www.rcsb.org/structure/9RU8 as anatomical reference.
+Open `horizontal.html` locally. It uses `horizontal.css`, `horizontal.js`, and the original shared styles and terminal animation. The horizontal RNA retains the stable small-viewport measurement for mobile toolbar changes, one native vertical page scroll, a large translucent ribosome, centered tool information, enlarged bases, and the short sequence AUG → aRgus → G C → MfAP → A U → MAMMOTH → C G → SYS → UAA. The tool tiles and abbreviated strand are interface symbols, not a literal biological coding sequence.
 
-The original header and hero remain unchanged. The production main branch and its Pages configuration are not part of this publication. Source changes are retained on the test/rna-vertical and test/rna-horizontal branches. The preview repository publishes its preview branch.
+The title “Web applications and databases.” keeps its original wording and wrapping, with line-height increased from 0.99 to 1.12 for more space between lines. The remainder of the original top is unchanged.
+
+The earlier vertical comparison remains at https://jannisbuecking.github.io/human-genetics-heidelberg-tools-rna-preview/vertical/ with its RNA / Panels selector. The root website uses the requested horizontal approach. The production main branch and its Pages configuration remain untouched. Publishing uses only the preview branch of the separate preview repository.

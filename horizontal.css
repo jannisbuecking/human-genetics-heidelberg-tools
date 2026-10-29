@@ -1,4 +1,4 @@
-/* The original header and hero are deliberately outside this stylesheet. */
+/* Horizontal RNA and original Panels views. */
 .tools-section.horizontal-tools { padding: 0; position: relative; background: #061821; }
 .horizontal-tools .section-heading { max-width: 1224px; margin: 0 auto; padding: 36px 48px 22px; text-align: center; }
 .horizontal-tools h2 { font-size: clamp(34px, 4.8vw, 60px); margin: 0; }
@@ -14,14 +14,14 @@
 .horizontal-letter { width: var(--horizontal-base-size); }
 .horizontal-tool { width: min(100%, 520px); }
 .horizontal-unit .nucleotide-mark { width: var(--horizontal-base-size); height: var(--horizontal-base-size); display: grid; place-items: center; border: 1px solid #80cdd266; border-radius: 8px; background: var(--blue-dark); color: var(--aqua); font: 500 52px 'DM Mono', monospace; }
-.horizontal-unit .tool-card { width: 100%; min-height: var(--horizontal-card-height, 0px); padding: 29px; gap: 22px; border-radius: 8px; text-align: center; align-items: center; }
-.horizontal-unit .tool-card.reveal-ready { opacity: 1; transform: none; transition: border-color 200ms ease, box-shadow 200ms ease; transition-delay: 0s; will-change: auto; }
-.horizontal-unit .tool-card.is-current { border-color: #80cdd280; }
-.horizontal-unit .tool-logo-wrap { flex-shrink: 0; width: 100%; justify-content: center; }
-.horizontal-unit .tool-description { font-size: 15px; line-height: 1.6; text-align: center; }
-.horizontal-unit .card-links { margin-top: auto; width: 100%; justify-content: center; }
-.horizontal-unit .card-links a { justify-content: center; }
-.horizontal-unit .sys-logo { max-width: 310px; }
+.horizontal-tools[data-view="rna"] .horizontal-unit .tool-card { width: 100%; min-height: var(--horizontal-card-height, 0px); padding: 29px; gap: 22px; border-radius: 8px; text-align: center; align-items: center; }
+.horizontal-tools .tool-card.reveal-ready { opacity: 1; transform: none; transition: border-color 200ms ease, box-shadow 200ms ease; transition-delay: 0s; will-change: auto; }
+.horizontal-tools[data-view="rna"] .horizontal-unit .tool-card.is-current { border-color: #80cdd280; }
+.horizontal-tools[data-view="rna"] .horizontal-unit .tool-logo-wrap { flex-shrink: 0; width: 100%; justify-content: center; }
+.horizontal-tools[data-view="rna"] .horizontal-unit .tool-description { font-size: 15px; line-height: 1.6; text-align: center; }
+.horizontal-tools[data-view="rna"] .horizontal-unit .card-links { margin-top: auto; width: 100%; justify-content: center; }
+.horizontal-tools[data-view="rna"] .horizontal-unit .card-links a { justify-content: center; }
+.horizontal-tools[data-view="rna"] .horizontal-unit .sys-logo { max-width: 310px; }
 .horizontal-ribosome, .horizontal-backbone, .horizontal-prime { display: none; }
 /* Only the page scrolls. The clipped viewport is not a second scroll container. */
 .horizontal-tools.is-enhanced .horizontal-scene { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: clip; }
@@ -48,19 +48,48 @@
   .horizontal-viewport { padding: 20px 22px 40px; }
   .horizontal-track { gap: 24px; }
   .horizontal-unit .nucleotide-mark { font-size: 36px; border-radius: 7px; }
-  .horizontal-unit .tool-card { padding: 25px 23px; gap: 21px; }
-  .horizontal-unit .tool-description { font-size: 14px; line-height: 1.65; }
-  .horizontal-unit .tool-logo-wrap { height: 62px; }
-  .horizontal-unit .argus-logo { font-size: 46px; }
-  .horizontal-unit .mfap-logo { width: 142px; }
-  .horizontal-unit .mammoth-logo { height: 52px; }
-  .horizontal-unit .mammoth-wordmark { font-size: 20px; }
-  .horizontal-unit .mammoth .tool-logo-wrap { gap: 10px; }
-  .horizontal-unit .card-links { padding-top: 20px; gap: 9px; }
-  .horizontal-unit .card-links a { font-size: 12px; padding: 10px 12px; gap: 7px; }
-  .horizontal-unit .card-links a::before { width: 14px; height: 14px; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .tool-card { padding: 25px 23px; gap: 21px; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .tool-description { font-size: 14px; line-height: 1.65; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .tool-logo-wrap { height: 62px; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .argus-logo { font-size: 46px; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .mfap-logo { width: 142px; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .mammoth-logo { height: 52px; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .mammoth-wordmark { font-size: 20px; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .mammoth .tool-logo-wrap { gap: 10px; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .card-links { padding-top: 20px; gap: 9px; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .card-links a { font-size: 12px; padding: 10px 12px; gap: 7px; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .card-links a::before { width: 14px; height: 14px; }
 }
 @media(prefers-reduced-motion:reduce) {
   .horizontal-tools.is-enhanced .horizontal-track { will-change: auto; }
-  .horizontal-unit .tool-card { transition: none; }
+  .horizontal-tools[data-view="rna"] .horizontal-unit .tool-card { transition: none; }
+}
+
+/* Quiet, persistent view switch with room for mobile safe areas. */
+.horizontal-view-switch { position: fixed; right: max(14px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); z-index: 10; display: flex; gap: 2px; padding: 3px; border: 1px solid #80cdd233; border-radius: 8px; background: #061821ed; box-shadow: 0 4px 16px #0002; opacity: .85; transition: opacity 160ms ease; }
+.horizontal-view-switch[hidden] { display: none; }
+.horizontal-view-switch:hover, .horizontal-view-switch:focus-within { opacity: 1; }
+.horizontal-view-switch button { min-height: 34px; padding: 6px 10px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #aebfc6; font: 600 11px Manrope, Arial, sans-serif; cursor: pointer; }
+.horizontal-view-switch button[aria-pressed="true"] { background: var(--blue-dark); border-color: #80cdd222; color: #fff; }
+.horizontal-view-switch button:hover { color: #fff; }
+.horizontal-view-switch button:focus-visible { outline: 2px solid var(--aqua); outline-offset: 2px; }
+/* Keep the fixed control clear of the legal-notice link at the page end. */
+.horizontal-view-switch ~ footer { padding-bottom: 76px; }
+/* Panels uses the original card styling and grid from main. */
+.horizontal-tools[data-view="panels"] .horizontal-viewport { max-width: 1320px; margin: 0 auto; padding: 20px 48px 64px; }
+.horizontal-tools[data-view="panels"] .horizontal-track { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; gap: 22px; }
+.horizontal-tools[data-view="panels"] .horizontal-tool { display: contents; }
+.horizontal-tools[data-view="panels"] .horizontal-letter,
+.horizontal-tools[data-view="panels"] .horizontal-ribosome,
+.horizontal-tools[data-view="panels"] .horizontal-backbone,
+.horizontal-tools[data-view="panels"] .horizontal-prime { display: none; }
+@media(max-width:860px) {
+  .horizontal-tools[data-view="panels"] .horizontal-track { grid-template-columns: 1fr; }
+}
+@media(max-width:700px) {
+  .horizontal-view-switch button { min-height: 40px; }
+  .horizontal-tools[data-view="panels"] .horizontal-viewport { padding: 14px 20px 72px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .horizontal-view-switch { transition: none; }
 }

@@ -19,6 +19,9 @@
   const primeEnd = section.querySelector('.horizontal-end');
   const phraseLink = document.getElementById('phrase-link');
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const viewSwitch = document.querySelector('.horizontal-view-switch');
+  const viewButtons = [...document.querySelectorAll('.horizontal-view-switch [data-tool-view]')];
+  const isRnaView = () => section.dataset.view !== 'panels';
   const sizeReference = document.createElement('div');
   sizeReference.className = 'horizontal-size-reference';
   sizeReference.setAttribute('aria-hidden', 'true');
@@ -31,6 +34,7 @@
   let nodes = [], phosphates = [], firstX = 0, lastX = 0, ribosomeScale = 1;
   let cameraReady = false, lastTime = 0, wavePhase = 0, flow = 0;
   let layoutHeight = 0, layoutQueued = false, forceLayout = false;
+  let savedRnaProgress = 0;
 
   function element(tag, attributes) {
     const node = document.createElementNS(ns, tag);
@@ -44,11 +48,13 @@
     return distance ? clamp(-journey.getBoundingClientRect().top / distance, 0, 1) : 0;
   }
   function scheduleLayout(force = false) {
+    if (!isRnaView()) return;
     forceLayout = forceLayout || force;
     if (layoutQueued) return;
     layoutQueued = true;
     requestAnimationFrame(() => {
       layoutQueued = false;
+      if (!isRnaView()) { forceLayout = false; return; }
       const height = sizeReference.getBoundingClientRect().height;
       const changed = Math.abs(section.clientWidth - width) > 1 || Math.abs(height - layoutHeight) > 1;
       const shouldLayout = forceLayout || changed;
@@ -68,7 +74,7 @@
     );
   }
   function layout() {
-    if (layingOut) return;
+    if (layingOut || !isRnaView()) return;
     layingOut = true;
     const wasEnabled = enabled;
     const oldProgress = progress();
@@ -168,7 +174,7 @@
 
   function frame(time) {
     queued = false;
-    if (!enabled) return;
+    if (!enabled || !isRnaView()) return;
     const p = progress();
     const bounds = scene.getBoundingClientRect();
     const visible = bounds.bottom > 0 && bounds.top < window.innerHeight && !document.hidden;
@@ -246,6 +252,40 @@
   });
   function routeHash() {
     if (location.hash.startsWith('#tool-')) goToCard(location.hash.slice(1), true);
+  }
+  function setView(view) {
+    if (!['rna', 'panels'].includes(view) || section.dataset.view === view) return;
+    const before = section.getBoundingClientRect();
+    const readingTools = before.top < window.innerHeight && before.bottom > 0;
+    const belowTools = before.bottom <= 0;
+    if (isRnaView() && enabled) savedRnaProgress = progress();
+    section.dataset.view = view;
+    viewButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.toolView === view)));
+    enabled = false;
+    section.classList.remove('is-enhanced');
+    journey.style.removeProperty('height');
+    scene.style.removeProperty('--horizontal-card-height');
+    track.removeAttribute('style');
+    units.forEach(unit => unit.removeAttribute('style'));
+    cards.forEach(card => {
+      card.removeAttribute('style');
+      card.classList.remove('is-current');
+      card.classList.add('is-visible');
+    });
+    if (isRnaView()) layout();
+    if (readingTools) {
+      const start = section.getBoundingClientRect().top + window.scrollY;
+      const offset = isRnaView() && enabled ? savedRnaProgress * distance : 0;
+      window.scrollTo({ top: start + offset, behavior: 'instant' });
+    } else if (belowTools) {
+      window.scrollBy({ top: section.getBoundingClientRect().bottom - before.bottom, behavior: 'instant' });
+    }
+    cameraReady = false;
+    request();
+  }
+  if (viewSwitch) {
+    viewButtons.forEach(button => button.addEventListener('click', () => setView(button.dataset.toolView)));
+    viewSwitch.hidden = false;
   }
   window.addEventListener('scroll', request, { passive: true });
   // Ignore visual-height-only toolbar changes. Width and stable-height changes

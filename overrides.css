@@ -6,7 +6,7 @@
   background: var(--blue-dark);
 }
 .hero-copy { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 120px 48px; min-height: calc(100vh - 106px); min-height: calc(100svh - 106px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.hero h1 { color: #fff; font-size: clamp(42px, 6vw, 72px); }
+.hero h1 { color: #fff; font-size: clamp(42px, 6vw, 72px); line-height: 1.12; }
 .hero .intro { color: #aebfc6; text-transform: uppercase; letter-spacing: .16em; font-size: 14px; font-weight: 600; }
 .phrase-rotator { margin: 32px 0 0; width: 100%; display: flex; justify-content: center; }
 .phrase-link {
