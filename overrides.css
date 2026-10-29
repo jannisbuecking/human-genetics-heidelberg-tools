@@ -92,6 +92,7 @@ nav { font-size: 15px; }
 
 footer { font-size: 12px; color: #9fb9c0; background: var(--blue-dark); border-top: 0; box-shadow: 0 0 0 100vmax var(--blue-dark); clip-path: inset(0 -100vmax); }
 footer a { color: #fff; }
+.footer-links { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; }
 
 .legal-page { max-width: 900px; margin: 0 auto; padding: 72px 48px 100px; }
 .legal-page h1 { font-size: clamp(42px, 5vw, 66px); }
