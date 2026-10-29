@@ -65,16 +65,14 @@
   .horizontal-tools[data-view="rna"] .horizontal-unit .tool-card { transition: none; }
 }
 
-/* Quiet, persistent view switch with room for mobile safe areas. */
-.horizontal-view-switch { position: fixed; right: max(14px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); z-index: 10; display: flex; gap: 2px; padding: 3px; border: 1px solid #80cdd233; border-radius: 8px; background: #061821ed; box-shadow: 0 4px 16px #0002; opacity: .85; transition: opacity 160ms ease; }
+/* Quiet corner control, visible only inside the RNA / Panels section. */
+.horizontal-view-switch { position: fixed; right: max(14px, env(safe-area-inset-right)); bottom: calc(max(12px, env(safe-area-inset-bottom)) + var(--tools-bottom-offset, 0px)); z-index: 10; display: flex; gap: 2px; padding: 3px; border: 1px solid #80cdd233; border-radius: 8px; background: #061821ed; box-shadow: 0 4px 16px #0002; opacity: .85; transition: opacity 160ms ease; }
 .horizontal-view-switch[hidden] { display: none; }
 .horizontal-view-switch:hover, .horizontal-view-switch:focus-within { opacity: 1; }
 .horizontal-view-switch button { min-height: 34px; padding: 6px 10px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #aebfc6; font: 600 11px Manrope, Arial, sans-serif; cursor: pointer; }
 .horizontal-view-switch button[aria-pressed="true"] { background: var(--blue-dark); border-color: #80cdd222; color: #fff; }
 .horizontal-view-switch button:hover { color: #fff; }
 .horizontal-view-switch button:focus-visible { outline: 2px solid var(--aqua); outline-offset: 2px; }
-/* Keep the fixed control clear of the legal-notice link at the page end. */
-.horizontal-view-switch ~ footer { padding-bottom: 76px; }
 /* Panels uses the original card styling and grid from main. */
 .horizontal-tools[data-view="panels"] .horizontal-viewport { max-width: 1320px; margin: 0 auto; padding: 20px 48px 64px; }
 .horizontal-tools[data-view="panels"] .horizontal-track { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; gap: 22px; }

@@ -35,6 +35,27 @@
   let cameraReady = false, lastTime = 0, wavePhase = 0, flow = 0;
   let layoutHeight = 0, layoutQueued = false, forceLayout = false;
   let savedRnaProgress = 0;
+  let switchQueued = false;
+
+  function updateViewSwitch() {
+    if (!viewSwitch) return;
+    const bounds = section.getBoundingClientRect();
+    const visibleHeight = window.innerHeight;
+    if (bounds.bottom <= 0 || bounds.top >= visibleHeight) {
+      viewSwitch.hidden = true;
+      return;
+    }
+    // Keep the corner control inside the tools section, including at its end.
+    const bottomOffset = Math.max(0, visibleHeight - bounds.bottom);
+    viewSwitch.style.setProperty('--tools-bottom-offset', `${bottomOffset}px`);
+    viewSwitch.hidden = false;
+    viewSwitch.hidden = viewSwitch.getBoundingClientRect().top < Math.max(0, bounds.top) + 8;
+  }
+  function scheduleViewSwitch() {
+    if (switchQueued) return;
+    switchQueued = true;
+    requestAnimationFrame(() => { switchQueued = false; updateViewSwitch(); });
+  }
 
   function element(tag, attributes) {
     const node = document.createElementNS(ns, tag);
@@ -104,6 +125,7 @@
     enabled = layoutHeight >= stageTop + cardHeight + 200 && width >= 300;
     if (!enabled) {
       layingOut = false;
+      scheduleViewSwitch();
       return;
     }
     section.classList.add('is-enhanced');
@@ -170,6 +192,7 @@
     cameraReady = false;
     lastTime = 0;
     request();
+    scheduleViewSwitch();
   }
 
   function frame(time) {
@@ -282,27 +305,28 @@
     }
     cameraReady = false;
     request();
+    updateViewSwitch();
   }
   if (viewSwitch) {
     viewButtons.forEach(button => button.addEventListener('click', () => setView(button.dataset.toolView)));
-    viewSwitch.hidden = false;
   }
-  window.addEventListener('scroll', request, { passive: true });
+  window.addEventListener('scroll', () => { request(); scheduleViewSwitch(); }, { passive: true });
   // Ignore visual-height-only toolbar changes. Width and stable-height changes
   // (rotation, split view, or desktop resizing) still rebuild the geometry.
-  window.addEventListener('resize', () => scheduleLayout(), { passive: true });
+  window.addEventListener('resize', () => { scheduleLayout(); scheduleViewSwitch(); }, { passive: true });
   window.addEventListener('hashchange', routeHash);
-  document.addEventListener('visibilitychange', request);
+  document.addEventListener('visibilitychange', () => { request(); scheduleViewSwitch(); });
   motionPreference.addEventListener('change', request);
   cards.forEach(card => card.querySelectorAll('img').forEach(image => {
     if (!image.complete) image.addEventListener('load', () => scheduleLayout(true), { once: true });
   }));
   if (window.ResizeObserver) {
-    const sizeObserver = new ResizeObserver(() => scheduleLayout());
+    const sizeObserver = new ResizeObserver(() => { scheduleLayout(); scheduleViewSwitch(); });
     sizeObserver.observe(section);
     sizeObserver.observe(sizeReference);
   }
   layout();
   routeHash();
+  updateViewSwitch();
   if (document.fonts) document.fonts.ready.then(() => { scheduleLayout(true); });
 })();

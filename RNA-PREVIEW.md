@@ -2,9 +2,9 @@
 
 Current test website: https://jannisbuecking.github.io/human-genetics-heidelberg-tools-rna-preview/
 
-The default is the horizontal RNA approach. A small, discreet RNA / Panels control is fixed at the bottom right, with mobile safe-area spacing. It switches to the original main-branch two-column tool grid (one column at 860 pixels and below). All four tool cards are reused in place, preserving their IDs, logos, descriptions, destinations, keyboard access, and terminal jump targets.
+The default is the horizontal RNA approach. A small, discreet RNA / Panels control appears at the bottom right only within the visible tools section, with mobile safe-area spacing. It stays hidden in the hero and after leaving the tools section, and follows the section bottom when the footer comes into view. It switches to the original main-branch two-column tool grid (one column at 860 pixels and below). All four tool cards are reused in place, preserving their IDs, logos, descriptions, destinations, keyboard access, and terminal jump targets.
 
-When switching within the tools section, Panels opens at the grid heading. Returning to RNA restores the previous position along the strand. Choosing a view while still in the hero does not jump away from the hero. Animation is suspended in Panels mode. The footer leaves room for the fixed control so the legal-notice link remains accessible.
+When switching within the tools section, Panels opens at the grid heading. Returning to RNA restores the previous position along the strand. Animation is suspended in Panels mode. The control stays above the footer, leaving the legal-notice link accessible without extra footer padding.
 
 Open `horizontal.html` locally. It uses `horizontal.css`, `horizontal.js`, and the original shared styles and terminal animation. The horizontal RNA retains the stable small-viewport measurement for mobile toolbar changes, one native vertical page scroll, a large translucent ribosome, centered tool information, enlarged bases, and the short sequence AUG → aRgus → G C → MfAP → A U → MAMMOTH → C G → SYS → UAA. The tool tiles and abbreviated strand are interface symbols, not a literal biological coding sequence.
 
