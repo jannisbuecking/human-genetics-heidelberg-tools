@@ -63,9 +63,9 @@
 }
 
 /* Compact view selector, using the original portal colors. */
-.tool-view-switch { display: flex; justify-content: center; width: fit-content; margin: 24px auto 20px; padding: 4px; gap: 4px; border: 1px solid #80cdd244; border-radius: 10px; background: #061821; }
+.tool-view-switch { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 232px; max-width: 100%; margin: 24px auto 20px; padding: 4px; gap: 4px; border: 1px solid #80cdd244; border-radius: 10px; background: #061821; }
 .tool-view-switch[hidden] { display: none; }
-.tool-view-switch button { min-height: 44px; min-width: 104px; padding: 10px 24px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #aebfc6; font: 600 14px Manrope, Arial, sans-serif; cursor: pointer; transition: background 180ms ease, color 180ms ease, border-color 180ms ease; }
+.tool-view-switch button { min-height: 44px; width: 100%; min-width: 0; padding: 10px 24px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #aebfc6; font: 600 14px Manrope, Arial, sans-serif; cursor: pointer; transition: background 180ms ease, color 180ms ease, border-color 180ms ease; }
 .tool-view-switch button:hover { color: #fff; background: #003a5266; }
 .tool-view-switch button[aria-pressed="true"] { background: var(--blue); border-color: #80cdd244; color: #fff; }
 .tool-view-switch button:focus-visible { outline: 2px solid var(--aqua); outline-offset: 3px; }

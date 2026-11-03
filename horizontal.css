@@ -66,10 +66,10 @@
 }
 
 /* Compact Explore / List control immediately below the tools heading. */
-.horizontal-view-switch { position: relative; display: flex; width: fit-content; margin: 12px auto 0; gap: 2px; padding: 3px; border: 1px solid #80cdd233; border-radius: 8px; background: #061821ed; opacity: .9; transition: opacity 160ms ease; }
+.horizontal-view-switch { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 156px; max-width: 100%; margin: 12px auto 0; gap: 2px; padding: 3px; border: 1px solid #80cdd233; border-radius: 8px; background: #061821ed; opacity: .9; transition: opacity 160ms ease; }
 .horizontal-view-switch[hidden] { display: none; }
 .horizontal-view-switch:hover, .horizontal-view-switch:focus-within { opacity: 1; }
-.horizontal-view-switch button { min-height: 34px; padding: 6px 10px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #aebfc6; font: 600 11px Manrope, Arial, sans-serif; cursor: pointer; }
+.horizontal-view-switch button { width: 100%; min-width: 0; min-height: 34px; padding: 6px 10px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #aebfc6; font: 600 11px Manrope, Arial, sans-serif; cursor: pointer; }
 .horizontal-view-switch button[aria-pressed="true"] { background: var(--blue-dark); border-color: #80cdd222; color: #fff; }
 .horizontal-view-switch button:hover { color: #fff; }
 .horizontal-view-switch button:focus-visible { outline: 2px solid var(--aqua); outline-offset: 2px; }
