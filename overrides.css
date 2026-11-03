@@ -6,7 +6,7 @@
   background: var(--blue-dark);
 }
 .hero-copy { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 120px 48px; min-height: calc(100vh - 106px); min-height: calc(100svh - 106px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.hero h1 { color: #fff; font-size: clamp(42px, 6vw, 72px); }
+.hero h1 { color: #fff; font-size: clamp(42px, 6vw, 72px); line-height: 1.12; }
 .hero .intro { color: #aebfc6; text-transform: uppercase; letter-spacing: .16em; font-size: 14px; font-weight: 600; }
 .phrase-rotator { margin: 32px 0 0; width: 100%; display: flex; justify-content: center; }
 .phrase-link {
@@ -92,6 +92,7 @@ nav { font-size: 15px; }
 
 footer { font-size: 12px; color: #9fb9c0; background: var(--blue-dark); border-top: 0; box-shadow: 0 0 0 100vmax var(--blue-dark); clip-path: inset(0 -100vmax); }
 footer a { color: #fff; }
+.footer-links { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; }
 
 .legal-page { max-width: 900px; margin: 0 auto; padding: 72px 48px 100px; }
 .legal-page h1 { font-size: clamp(42px, 5vw, 66px); }
