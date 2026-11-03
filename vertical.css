@@ -90,3 +90,7 @@
 @media(prefers-reduced-motion:reduce) {
   .tool-view-switch button { transition: none; }
 }
+
+/* List occupies a full viewport even when its grid is short. */
+.vertical-tools[data-view="panels"] .vertical-content { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
+.vertical-tools[data-view="panels"] .vertical-landscape { flex: 1; width: 100%; padding-bottom: 32px; }

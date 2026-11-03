@@ -1,6 +1,6 @@
 /* Horizontal RNA and original Panels views. */
 .tools-section.horizontal-tools { padding: 0; position: relative; background: #061821; }
-.horizontal-tools .section-heading { max-width: 1224px; margin: 0 auto; padding: 36px 48px 22px; text-align: center; }
+.horizontal-tools .section-heading { max-width: 1224px; margin: 0 auto; padding: 24px 48px 16px; text-align: center; }
 .horizontal-tools h2 { font-size: clamp(34px, 4.8vw, 60px); margin: 0; }
 .horizontal-scene { --horizontal-base-size: 116px; position: relative; isolation: isolate; }
 /* Measure the same stable viewport in both the pinned and stacked layouts.
@@ -42,7 +42,7 @@
 .horizontal-sugars circle { fill: var(--aqua); }
 .horizontal-tools.is-enhanced .horizontal-prime { display: block; position: absolute; font: 13px 'DM Mono', monospace; color: var(--aqua); pointer-events: none; }
 @media(max-width:700px) {
-  .horizontal-tools .section-heading { padding: 28px 22px 14px; }
+  .horizontal-tools .section-heading { padding: 20px 22px 12px; }
   .horizontal-tools h2 { font-size: 32px; }
   .horizontal-scene { --horizontal-base-size: 76px; }
   .horizontal-viewport { padding: 20px 22px 40px; }
@@ -65,28 +65,38 @@
   .horizontal-tools[data-view="rna"] .horizontal-unit .tool-card { transition: none; }
 }
 
-/* Quiet corner control, visible only inside the RNA / Panels section. */
-.horizontal-view-switch { position: fixed; right: max(14px, env(safe-area-inset-right)); bottom: calc(max(12px, env(safe-area-inset-bottom)) + var(--tools-bottom-offset, 0px)); z-index: 10; display: flex; gap: 2px; padding: 3px; border: 1px solid #80cdd233; border-radius: 8px; background: #061821ed; box-shadow: 0 4px 16px #0002; opacity: .85; transition: opacity 160ms ease; }
+/* Compact Explore / List control immediately below the tools heading. */
+.horizontal-view-switch { position: relative; display: flex; width: fit-content; margin: 12px auto 0; gap: 2px; padding: 3px; border: 1px solid #80cdd233; border-radius: 8px; background: #061821ed; opacity: .9; transition: opacity 160ms ease; }
 .horizontal-view-switch[hidden] { display: none; }
 .horizontal-view-switch:hover, .horizontal-view-switch:focus-within { opacity: 1; }
 .horizontal-view-switch button { min-height: 34px; padding: 6px 10px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: #aebfc6; font: 600 11px Manrope, Arial, sans-serif; cursor: pointer; }
 .horizontal-view-switch button[aria-pressed="true"] { background: var(--blue-dark); border-color: #80cdd222; color: #fff; }
 .horizontal-view-switch button:hover { color: #fff; }
 .horizontal-view-switch button:focus-visible { outline: 2px solid var(--aqua); outline-offset: 2px; }
-/* Panels uses the original card styling and grid from main. */
-.horizontal-tools[data-view="panels"] .horizontal-viewport { max-width: 1320px; margin: 0 auto; padding: 20px 48px 64px; }
-.horizontal-tools[data-view="panels"] .horizontal-track { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; gap: 22px; }
+/* List fills the viewport and uses the original card grid from main.
+   A fitting desktop grid is pinned briefly; taller lists keep normal flow. */
+.horizontal-tools[data-view="panels"] .horizontal-scene { min-height: 100vh; min-height: max(100svh, var(--list-content-height, 0px)); display: flex; flex-direction: column; }
+.horizontal-tools[data-view="panels"] .horizontal-stage { flex: 1; display: flex; min-height: 0; }
+.horizontal-tools.is-list-pinned .horizontal-scene { position: sticky; top: 0; height: 100vh; height: 100svh; }
+.horizontal-tools[data-view="panels"] .horizontal-viewport { flex: 1; display: flex; flex-direction: column; justify-content: center; width: 100%; max-width: 1320px; margin: 0 auto; padding: 12px 48px 36px; }
+.horizontal-tools[data-view="panels"] .horizontal-track { flex-shrink: 0; width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; gap: 22px; }
 .horizontal-tools[data-view="panels"] .horizontal-tool { display: contents; }
 .horizontal-tools[data-view="panels"] .horizontal-letter,
 .horizontal-tools[data-view="panels"] .horizontal-ribosome,
 .horizontal-tools[data-view="panels"] .horizontal-backbone,
 .horizontal-tools[data-view="panels"] .horizontal-prime { display: none; }
+@media(min-width:861px) {
+  .horizontal-tools[data-view="panels"] .tool-card { padding: clamp(20px, 3svh, 30px); gap: clamp(14px, 2svh, 22px); }
+  .horizontal-tools[data-view="panels"] .tool-logo-wrap { height: clamp(52px, 8svh, 72px); }
+  .horizontal-tools[data-view="panels"] .tool-description { font-size: 15px; }
+  .horizontal-tools[data-view="panels"] .card-links { padding-top: clamp(14px, 2svh, 22px); }
+}
 @media(max-width:860px) {
   .horizontal-tools[data-view="panels"] .horizontal-track { grid-template-columns: 1fr; }
 }
 @media(max-width:700px) {
   .horizontal-view-switch button { min-height: 40px; }
-  .horizontal-tools[data-view="panels"] .horizontal-viewport { padding: 14px 20px 72px; }
+  .horizontal-tools[data-view="panels"] .horizontal-viewport { padding: 14px 20px 32px; }
 }
 @media(prefers-reduced-motion:reduce) {
   .horizontal-view-switch { transition: none; }

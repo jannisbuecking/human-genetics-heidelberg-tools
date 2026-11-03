@@ -35,27 +35,7 @@
   let cameraReady = false, lastTime = 0, wavePhase = 0, flow = 0;
   let layoutHeight = 0, layoutQueued = false, forceLayout = false;
   let savedRnaProgress = 0;
-  let switchQueued = false;
-
-  function updateViewSwitch() {
-    if (!viewSwitch) return;
-    const bounds = section.getBoundingClientRect();
-    const visibleHeight = window.innerHeight;
-    if (bounds.bottom <= 0 || bounds.top >= visibleHeight) {
-      viewSwitch.hidden = true;
-      return;
-    }
-    // Keep the corner control inside the tools section, including at its end.
-    const bottomOffset = Math.max(0, visibleHeight - bounds.bottom);
-    viewSwitch.style.setProperty('--tools-bottom-offset', `${bottomOffset}px`);
-    viewSwitch.hidden = false;
-    viewSwitch.hidden = viewSwitch.getBoundingClientRect().top < Math.max(0, bounds.top) + 8;
-  }
-  function scheduleViewSwitch() {
-    if (switchQueued) return;
-    switchQueued = true;
-    requestAnimationFrame(() => { switchQueued = false; updateViewSwitch(); });
-  }
+  let listDistance = 0;
 
   function element(tag, attributes) {
     const node = document.createElementNS(ns, tag);
@@ -69,13 +49,11 @@
     return distance ? clamp(-journey.getBoundingClientRect().top / distance, 0, 1) : 0;
   }
   function scheduleLayout(force = false) {
-    if (!isRnaView()) return;
     forceLayout = forceLayout || force;
     if (layoutQueued) return;
     layoutQueued = true;
     requestAnimationFrame(() => {
       layoutQueued = false;
-      if (!isRnaView()) { forceLayout = false; return; }
       const height = sizeReference.getBoundingClientRect().height;
       const changed = Math.abs(section.clientWidth - width) > 1 || Math.abs(height - layoutHeight) > 1;
       const shouldLayout = forceLayout || changed;
@@ -83,6 +61,36 @@
       if (shouldLayout) layout();
       else request();
     });
+  }
+  function layoutList() {
+    layingOut = true;
+    const before = journey.getBoundingClientRect();
+    const wasPinned = section.classList.contains('is-list-pinned') && before.top <= 0 && before.top >= -listDistance;
+    const wasAfter = before.bottom <= 0;
+    section.classList.remove('is-list-pinned');
+    journey.style.removeProperty('height');
+    width = section.clientWidth;
+    layoutHeight = sizeReference.getBoundingClientRect().height;
+    const viewportStyle = getComputedStyle(viewport);
+    const contentHeight = Math.ceil(
+      section.querySelector('.section-heading').getBoundingClientRect().height +
+      track.getBoundingClientRect().height +
+      parseFloat(viewportStyle.paddingTop) + parseFloat(viewportStyle.paddingBottom)
+    );
+    scene.style.setProperty('--list-content-height', `${contentHeight}px`);
+    listDistance = 0;
+    // Pin only a grid that fits in the viewport. Long lists stay scrollable.
+    if (contentHeight <= layoutHeight) {
+      section.classList.add('is-list-pinned');
+      listDistance = Math.min(layoutHeight * .65, 520);
+      journey.style.height = `${layoutHeight + listDistance}px`;
+    }
+    if (wasPinned) {
+      window.scrollTo({ top: window.scrollY + journey.getBoundingClientRect().top + clamp(-before.top, 0, listDistance), behavior: 'instant' });
+    } else if (wasAfter) {
+      window.scrollBy({ top: journey.getBoundingClientRect().bottom - before.bottom, behavior: 'instant' });
+    }
+    layingOut = false;
   }
   function yAt(x) {
     if (motionPreference.matches) return baseline;
@@ -95,7 +103,8 @@
     );
   }
   function layout() {
-    if (layingOut || !isRnaView()) return;
+    if (layingOut) return;
+    if (!isRnaView()) { layoutList(); return; }
     layingOut = true;
     const wasEnabled = enabled;
     const oldProgress = progress();
@@ -122,10 +131,9 @@
     // Use the CSS scene's stable viewport, not Safari's toolbar-dependent height.
     // Reserve enough room for the card, its stem, and the lower subunit.
     // Only genuinely short windows use the naturally flowing layout.
-    enabled = layoutHeight >= stageTop + cardHeight + 200 && width >= 300;
+    enabled = layoutHeight >= stageTop + cardHeight + 120 && width >= 300;
     if (!enabled) {
       layingOut = false;
-      scheduleViewSwitch();
       return;
     }
     section.classList.add('is-enhanced');
@@ -192,7 +200,6 @@
     cameraReady = false;
     lastTime = 0;
     request();
-    scheduleViewSwitch();
   }
 
   function frame(time) {
@@ -285,7 +292,7 @@
     section.dataset.view = view;
     viewButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.toolView === view)));
     enabled = false;
-    section.classList.remove('is-enhanced');
+    section.classList.remove('is-enhanced', 'is-list-pinned');
     journey.style.removeProperty('height');
     scene.style.removeProperty('--horizontal-card-height');
     track.removeAttribute('style');
@@ -295,7 +302,7 @@
       card.classList.remove('is-current');
       card.classList.add('is-visible');
     });
-    if (isRnaView()) layout();
+    layout();
     if (readingTools) {
       const start = section.getBoundingClientRect().top + window.scrollY;
       const offset = isRnaView() && enabled ? savedRnaProgress * distance : 0;
@@ -305,28 +312,27 @@
     }
     cameraReady = false;
     request();
-    updateViewSwitch();
   }
   if (viewSwitch) {
     viewButtons.forEach(button => button.addEventListener('click', () => setView(button.dataset.toolView)));
+    viewSwitch.hidden = false;
   }
-  window.addEventListener('scroll', () => { request(); scheduleViewSwitch(); }, { passive: true });
+  window.addEventListener('scroll', request, { passive: true });
   // Ignore visual-height-only toolbar changes. Width and stable-height changes
   // (rotation, split view, or desktop resizing) still rebuild the geometry.
-  window.addEventListener('resize', () => { scheduleLayout(); scheduleViewSwitch(); }, { passive: true });
+  window.addEventListener('resize', () => scheduleLayout(), { passive: true });
   window.addEventListener('hashchange', routeHash);
-  document.addEventListener('visibilitychange', () => { request(); scheduleViewSwitch(); });
+  document.addEventListener('visibilitychange', request);
   motionPreference.addEventListener('change', request);
   cards.forEach(card => card.querySelectorAll('img').forEach(image => {
     if (!image.complete) image.addEventListener('load', () => scheduleLayout(true), { once: true });
   }));
   if (window.ResizeObserver) {
-    const sizeObserver = new ResizeObserver(() => { scheduleLayout(); scheduleViewSwitch(); });
+    const sizeObserver = new ResizeObserver(() => scheduleLayout());
     sizeObserver.observe(section);
     sizeObserver.observe(sizeReference);
   }
   layout();
   routeHash();
-  updateViewSwitch();
   if (document.fonts) document.fonts.ready.then(() => { scheduleLayout(true); });
 })();
